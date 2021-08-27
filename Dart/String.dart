@@ -28,6 +28,10 @@ void main(){
   print(str.substring(2)); // ウエオ
   print(str.substring(1,3)); // イウ
 
+  // 追加
+  str += "カキクケコ";
+  print(str);
+  
   // 分割
   str = "Honda,Yamaha,Kawasaki";
   List<String> ary = str.split(",");
