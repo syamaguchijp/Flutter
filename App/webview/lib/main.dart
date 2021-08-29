@@ -38,6 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _position = 1;
   bool _isLoading = false;
   String _title = '';
+  double _currentPositionX = 0;
 
   @override
   void initState() {
@@ -59,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: _buildBody(),
 
       persistentFooterButtons: [
-        IconButton(
+        IconButton( // if (_canGoBack) で非表示にもできる
           icon: Icon(Icons.arrow_back),
           onPressed: _canGoBack ? _webViewController?.goBack : null,
         ),
