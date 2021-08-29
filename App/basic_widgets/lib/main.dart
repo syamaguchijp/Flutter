@@ -61,18 +61,21 @@ class _MyHomePageState extends State<MyHomePage> {
       //body: Container(
         //color: Colors.black12,
         //width: double.infinity,
-      //body: Padding(
-        //padding: const EdgeInsets.all(16.0),
 
         child: Center(
 
           child: Column( // 上から下に並んでいく。ColumnじゃなくてRowにすると、左から右に並ぶ。
 
-            mainAxisAlignment: MainAxisAlignment.start,//MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start, // 横
+            crossAxisAlignment: CrossAxisAlignment.center, // 縦
 
             children: <Widget>[
-              TextFormField(
+
+              Padding(
+                padding: EdgeInsets.all(20),
+              ),
+
+              TextFormField( // 複数のTextformFieldがある場合は、Formでくるむ
                 // https://flutter.dev/docs/cookbook/forms/validation
                 // 未完成
                 validator: (value) {
@@ -113,9 +116,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
 
+              Padding(
+                padding: EdgeInsets.all(20),
+              ),
+
+              const Divider(
+                height: 20,
+                thickness: 5,
+                indent: 20,
+                endIndent: 20,
+              ),
+
               ElevatedButton(onPressed: (){
                 pushToNextScreen();
               }, child: Text("画面遷移")),
+
+              Padding(
+                padding: EdgeInsets.all(20),
+              ),
 
               Image.asset('images/kenmeri.jpg',
                   width: double.infinity),

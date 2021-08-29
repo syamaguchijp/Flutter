@@ -32,9 +32,10 @@ class MyHomePage extends StatefulWidget { // setStateを使う必要があるた
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  final Completer<WebViewController> _controller = Completer<WebViewController>();
-
-  int position = 1;
+  WebViewController? _webViewController;
+  bool _canGoBack = false;
+  bool _canGoForward = false;
+  int _position = 1;
   bool _isLoading = false;
   String _title = '';
 
@@ -48,21 +49,42 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+
       appBar: AppBar(
         title: Text(_title),
       ),
+
       body: _buildBody(),
+
+      persistentFooterButtons: [
+        IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: _canGoBack ? _webViewController?.goBack : null,
+        ),
+        IconButton(
+          icon: Icon(Icons.arrow_forward),
+          onPressed: _canGoForward ? _webViewController?.goForward : null,
+        ),
+        IconButton(
+          icon: Icon(Icons.refresh),
+          onPressed: (){_webViewController?.reload();},
+        )
+      ],
     );
   }
 
   Widget _buildBody() {
+
     return Column(
       children: [
+
         if (_isLoading) const LinearProgressIndicator(),
+
         Expanded( // Columnの子Widget間の隙間を目一杯埋める
           child: IndexedStack( // 複数のwidgetの表示を切り替える場合、IndexedStackを使う
-            index: position,
+            index: _position,
             children: [
               _buildWebView(),
               Container(
@@ -79,25 +101,29 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buildWebView() {
+
     return WebView(
       initialUrl: 'https://yahoo.co.jp',
       javascriptMode: JavascriptMode.unrestricted,
       onWebViewCreated: (controller) {
-        _controller.complete;
+        _webViewController = controller;
       },
       onPageStarted: (String url) {
         setState(() {
           _isLoading = true;
-          position = 1;
+          _position = 1;
         });
       },
       onPageFinished: (String url) async {
+        if (_webViewController != null) {
+          _canGoBack = await _webViewController!.canGoBack();
+          _canGoForward = await _webViewController!.canGoForward();
+        }
         setState(() {
           _isLoading = false;
-          position = 0;
+          _position = 0;
         });
-        final controller = await _controller.future;
-        final title = await controller.getTitle();
+        final title = await _webViewController!.getTitle();
         setState(() {
           if (title != null) {
             _title = title;
