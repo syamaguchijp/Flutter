@@ -5,10 +5,18 @@ import 'package:webview_flutter/webview_flutter.dart';
 class MyWebView extends StatefulWidget { // setStateを使う必要があるため、StatefulWidget
 
   MyWebView({Key? key, required this.urlstring}) : super(key: key);
-  final String urlstring;
+  String urlstring;
 
+  _MyWebViewState myWebviewState = _MyWebViewState();
   @override
-  _MyWebViewState createState() => _MyWebViewState();
+  _MyWebViewState createState() {
+    return myWebviewState;
+  }
+
+  void loadUrl(String s) {
+    urlstring = s;
+    myWebviewState.loadUrl(s);
+  }
 }
 
 class _MyWebViewState extends State<MyWebView> {
@@ -110,4 +118,8 @@ class _MyWebViewState extends State<MyWebView> {
     );
   }
 
+  void loadUrl(String s) {
+    print("loadUrl $s");
+    _webViewController?.loadUrl(s);
+  }
 }
