@@ -83,9 +83,11 @@ class _MyPageViewState extends State<MyPageViewWidget> {
                 SecondScreen("3"),
               ],
             ),
-            flex: 9,
+            //flex: 9,
           ),
-          Expanded(
+          Container(
+            alignment: Alignment.center,
+            height: 100.0,
             child: new PageIndicator(
               layout: PageIndicatorLayout.NONE,
               size: 20.0,
@@ -94,9 +96,9 @@ class _MyPageViewState extends State<MyPageViewWidget> {
               space: 5.0,
               count: 3,
             ),
-            flex: 1,
-          ),]
-        );
+          ),
+        ]
+    );
   }
 
   Widget page1() {
