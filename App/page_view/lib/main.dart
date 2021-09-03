@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_page_indicator/flutter_page_indicator.dart';
 
 void main() {
   runApp(MyApp());
@@ -70,15 +71,32 @@ class _MyPageViewState extends State<MyPageViewWidget> {
   @override
   Widget build(BuildContext context) {
     final PageController controller = PageController(initialPage: 0);
-    return PageView(
-      scrollDirection: Axis.horizontal,
-      controller: controller,
-      children: <Widget>[
-        page1(),
-        page2(),
-        SecondScreen("4"),
-      ],
-    );
+    return Column(
+        children: [
+          Expanded(
+            child: PageView(
+              scrollDirection: Axis.horizontal,
+              controller: controller,
+              children: <Widget>[
+                page1(),
+                page2(),
+                SecondScreen("4"),
+              ],
+            ),
+            flex: 9,
+          ),
+          Expanded(
+            child: new PageIndicator(
+              layout: PageIndicatorLayout.NONE,
+              size: 20.0,
+              activeSize: 30.0,
+              controller: controller,
+              space: 5.0,
+              count: 4,
+            ),
+            flex: 1,
+          ),]
+        );
   }
 
   Widget page1() {
