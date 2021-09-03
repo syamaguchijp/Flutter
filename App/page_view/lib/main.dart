@@ -53,15 +53,19 @@ class _MyHomePageState extends State<MyHomePage> {
         context,
         MaterialPageRoute(
             builder: (BuildContext context) {
-              return MyStatelessWidget();
+              return MyPageViewWidget();
             },
             fullscreenDialog: true));
   }
 }
 
-class MyStatelessWidget extends StatelessWidget {
+class MyPageViewWidget extends StatefulWidget {
+  MyPageViewWidget({Key? key}) : super(key: key);
+  @override
+  _MyPageViewState createState() => _MyPageViewState();
+}
 
-  const MyStatelessWidget({Key? key}) : super(key: key);
+class _MyPageViewState extends State<MyPageViewWidget> {
 
   @override
   Widget build(BuildContext context) {
