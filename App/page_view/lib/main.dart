@@ -80,7 +80,7 @@ class _MyPageViewState extends State<MyPageViewWidget> {
               children: <Widget>[
                 page1(),
                 page2(),
-                SecondScreen("4"),
+                SecondScreen("3"),
               ],
             ),
             flex: 9,
@@ -92,7 +92,7 @@ class _MyPageViewState extends State<MyPageViewWidget> {
               activeSize: 30.0,
               controller: controller,
               space: 5.0,
-              count: 4,
+              count: 3,
             ),
             flex: 1,
           ),]
@@ -129,11 +129,9 @@ class SecondScreen extends StatelessWidget {
               children: <Widget>[
                 Text(name),
                 ElevatedButton(onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SecondScreen("2")),
-                  );
-                }, child: Text("モーダル")),
+                  // モーダルを閉じる
+                  Navigator.of(context).pop();
+                }, child: Text("完了")),
               ]
           )
       ),
