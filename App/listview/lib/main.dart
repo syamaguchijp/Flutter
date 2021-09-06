@@ -41,28 +41,33 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildList() {
 
+    List<RowData> rowDataList = <RowData>[];
     NetworkManager networkManager = NetworkManager();
 
     return RefreshIndicator(
         onRefresh: () async {
-          //networkManager.fetchQiitaApi();
+          rowDataList = await networkManager.fetchQiitaApi();
         },
         child: FutureBuilder(
+          initialData: <RowData>[],
           future: networkManager.fetchQiitaApi(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            //show progress bar if no data
             if (snapshot.connectionState == ConnectionState.none && !snapshot.hasData) {
               return Text('No data');
             }
+            if (snapshot.connectionState != ConnectionState.done) {
+              return loader();
+            }
+
+            rowDataList = snapshot.data;
             return ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: snapshot.data.length,
+                itemCount: rowDataList.length,
                 itemBuilder: (context, index) {
-                  return _buildListRow(snapshot.data[index], index);
+                  return _buildListRow(rowDataList[index], index);
                 });
           },
-          initialData: <RowData>[],
         )
     );
   }
@@ -84,5 +89,15 @@ class _MyHomePageState extends State<MyHomePage> {
           onTap: () {
             print("onTap $index");},
         ));
+  }
+
+  Widget loader() {
+    return Center(
+      child: SizedBox(
+        width: 60,
+        height: 60,
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 }
