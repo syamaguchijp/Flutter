@@ -84,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   }
                   return null;
                 },
-                autofocus: true,
+                autofocus: false,
                 decoration: InputDecoration(
                   hintText: "input some word."
                 ),

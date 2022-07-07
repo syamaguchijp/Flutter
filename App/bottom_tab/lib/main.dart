@@ -77,15 +77,15 @@ class _MyWebViewState extends State<MyWebView> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text('Yahoo'),
+            label: 'Yahoo',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
-            title: Text('Apple'),
+            label: 'Apple',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text('Google'),
+            label: 'Google',
           ),
         ],
         currentIndex: _selectedIndex,
