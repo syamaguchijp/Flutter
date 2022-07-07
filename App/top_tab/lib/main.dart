@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
     return Scaffold(
       appBar: AppBar(
         //title: Text(widget.title),
-        toolbarHeight: 75.0,
+        toolbarHeight: 0.0,
         bottom: TabBar(
           controller: _tabController,
           tabs: _tab,
