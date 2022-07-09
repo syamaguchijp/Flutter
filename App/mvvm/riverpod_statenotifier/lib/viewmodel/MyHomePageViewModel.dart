@@ -13,7 +13,7 @@ final MyHomePageViewModelProvider =
 class MyHomePageViewModel extends StateNotifier<MyUser> {
 
   MyHomePageViewModel() : super(MyUser());
-  
+
   ApiResponse? _apiResponse;
   ApiResponse? get apiResponse => _apiResponse;
 

@@ -24,8 +24,9 @@ void main() {
 class User {
 
   // プロパティ
-  String name = "";
-  int age = 20;
+  String name;
+  int age;
+  late String str; // コンストラクタで定義されていない変数は、ここで初期値をつけるか、late修飾子
   String _nickName = ""; // アンスコでプライベート変数になる
 
   // 定数はconstかfinal
