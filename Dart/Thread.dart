@@ -24,10 +24,10 @@ main() {
 int globalVal = 100;
 
 
-
 /////// Futureやasyncによる非同期処理 //////
 
 void executeFuture() {
+
   // 1秒後に実行
   Future<String> future = 
     Future.delayed(Duration(seconds: 1), () => "executeFutre");
@@ -35,6 +35,7 @@ void executeFuture() {
 }
 
 Future<void> executeFutureAwait() async {
+
   print("executeFutreAwait1");
   Future<String> future =
     Future.delayed(Duration(seconds: 2), () => "executeFutreAwait4");
@@ -48,6 +49,7 @@ Future<void> executeFutureAwait() async {
 /////// isolateによる並列処理（isolate is like thread） //////
 
 void executeIsolate1(arg) {
+
   globalVal = 99; // グローバル変数の値を変えてみる
   Timer(const Duration(seconds: 3), 
     () {
@@ -56,6 +58,7 @@ void executeIsolate1(arg) {
 }
 
 void executeIsolate2(arg) {
+
   Timer(const Duration(seconds: 2), 
     () {
       print("executeIsolate2");
@@ -63,6 +66,7 @@ void executeIsolate2(arg) {
 }
 
 void executeIsolate3(arg) {
+
   Timer(const Duration(seconds: 1), 
     () {
       print("executeIsolate3");
