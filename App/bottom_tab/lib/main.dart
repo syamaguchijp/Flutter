@@ -114,16 +114,51 @@ class _MyWebViewState extends State<MyWebView> {
 
   Widget _buildBody() {
 
+    return IndexedStack( // 複数のwidgetの表示を切り替える場合、IndexedStackを使う
+      index: _selectedIndex, // 選択中のインデックス
+      children: [
+        _buildWebView(_urlList[0]),
+        _buildWebView(_urlList[1]),
+        _buildWebView(_urlList[2]),
+      ],
+    );
+  }
+
+  Widget _buildWebView(String urlStr) {
+
     return Column(
       children: [
-
         if (_isLoading) const LinearProgressIndicator(),
-
         Expanded( // Columnの子Widget間の隙間を目一杯埋める
-          child: IndexedStack( // 複数のwidgetの表示を切り替える場合、IndexedStackを使う
-            index: _position,
+          child: IndexedStack(
+            index: _position, // WebViewのZ座標の位置
             children: [
-              _buildWebView(),
+              WebView(
+                initialUrl: urlStr,
+                javascriptMode: JavascriptMode.unrestricted,
+                onWebViewCreated: (controller) {
+                  _webViewController = controller;
+                },
+                onPageStarted: (String url) {
+                  setState(() {
+                    _isLoading = true;
+                    _position = 1; // CircularProgressIndicatorを前面にもってきて表示させる
+                  });
+                },
+                onPageFinished: (String url) async {
+                  if (_webViewController != null) {
+                    _canGoBack = await _webViewController!.canGoBack();
+                    _canGoForward = await _webViewController!.canGoForward();
+                  }
+                  setState(() {
+                    _isLoading = false;
+                    _position = 0; // CircularProgressIndicatorより前面に出て表示を終了する
+                  });
+                },
+                onWebResourceError: (error) {
+                  print("onWebResourceError : $error");
+                },
+              ),
               Container(
                 color: Colors.white,
                 child: Center(
@@ -134,36 +169,6 @@ class _MyWebViewState extends State<MyWebView> {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildWebView() {
-
-    return WebView(
-      initialUrl: _urlstring,
-      javascriptMode: JavascriptMode.unrestricted,
-      onWebViewCreated: (controller) {
-        _webViewController = controller;
-      },
-      onPageStarted: (String url) {
-        setState(() {
-          _isLoading = true;
-          _position = 1;
-        });
-      },
-      onPageFinished: (String url) async {
-        if (_webViewController != null) {
-          _canGoBack = await _webViewController!.canGoBack();
-          _canGoForward = await _webViewController!.canGoForward();
-        }
-        setState(() {
-          _isLoading = false;
-          _position = 0;
-        });
-      },
-      onWebResourceError: (error) {
-        print("onWebResourceError : $error");
-      },
     );
   }
 }
