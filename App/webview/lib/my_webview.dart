@@ -38,6 +38,7 @@ class _MyWebViewState extends State<MyWebView> {
 
   @override
   Widget build(BuildContext context) {
+
     _urlstring = widget.urlstring;
     return Scaffold(
 
@@ -65,14 +66,13 @@ class _MyWebViewState extends State<MyWebView> {
   }
 
   Widget _buildBody() {
+
     return Column(
       children: [
-
         if (_isLoading) const LinearProgressIndicator(),
-
         Expanded( // Columnの子Widget間の隙間を目一杯埋める
           child: IndexedStack( // 複数のwidgetの表示を切り替える場合、IndexedStackを使う
-            index: _position,
+            index: _position, // WebViewのZ座標の位置
             children: [
               _buildWebView(),
               Container(
@@ -99,7 +99,7 @@ class _MyWebViewState extends State<MyWebView> {
       onPageStarted: (String url) {
         setState(() {
           _isLoading = true;
-          _position = 1;
+          _position = 1; // CircularProgressIndicatorを前面にもってきて表示させる
         });
       },
       onPageFinished: (String url) async {
@@ -109,7 +109,7 @@ class _MyWebViewState extends State<MyWebView> {
         }
         setState(() {
           _isLoading = false;
-          _position = 0;
+          _position = 0; // CircularProgressIndicatorより前面に出て表示を終了する
         });
       },
       onWebResourceError: (error) {
@@ -119,6 +119,7 @@ class _MyWebViewState extends State<MyWebView> {
   }
 
   void loadUrl(String s) {
+
     print("loadUrl $s");
     _webViewController?.loadUrl(s);
   }
