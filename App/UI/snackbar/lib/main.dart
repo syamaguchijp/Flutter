@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           AnimatedPositioned(
             left: _isChanged ? 0 : 0,
-            top: _isChanged ? 0 : -height, // -heightではなく-3000とかにすれば最初から画面外に位置して見えずに済む。
+            top: _isChanged ? 0 : -height, // -heightではなく-画面サイズ縦幅とかにすれば最初から画面外に位置して見えずに済む。
             duration: Duration(seconds: 1),
             child:GestureDetector(
               onTap: () {
