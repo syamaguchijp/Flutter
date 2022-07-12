@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0" />
+</head>
+<body>
+
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+      'use strict';
+      google.charts.load('current', {packages: ['corechart']});
+
+      // iOSとはソースが異なることに注意！
+
+      function drawPieChart(data) {
+
+          //alert(data); // Native側でこの関数に対して二次元配列で渡しても、ここでは一次元配列になってしまう。
+          var dataTable　= new google.visualization.DataTable();
+          dataTable.addColumn('string', 'Prefetcure');
+          dataTable.addColumn('number', 'Population');
+
+          var decodedData;
+          var transferData;
+          if (isAndroid()) {
+            decodedData = decodeURIComponent(data);
+            transferData = decodedData.toString().split(",");
+            for (var i = 0; i < transferData.length / 2; i++) {
+              dataTable.addRow([transferData[i * 2], Number(transferData[i * 2 + 1])]);
+            }
+          }
+
+          var options = {
+              width: 400,
+              height: 400,
+              title: '円グラフ'
+          };
+          var chart = new google.visualization.PieChart(document.getElementById('target'));
+          chart.draw(dataTable, options);
+      }
+      
+      function drawLineChart(data) {
+
+          //alert(data); // Native側でこの関数に対して二次元配列で渡しても、ここでは一次元配列になってしまう。
+          var decodedData;
+          var transferData;
+          var dataTable;
+          if (isAndroid()) {
+            decodedData = decodeURIComponent(data);
+            transferData = decodedData.toString().split(",");
+            dataTable　= new google.visualization.DataTable();
+            dataTable.addColumn('string', '年');
+            dataTable.addColumn('number', '消費量');
+            dataTable.addColumn('number', '価格');
+            for (var i = 0; i < transferData.length / 2; i++) {
+              dataTable.addRow([transferData[i * 3], Number(transferData[i * 3 + 1]),
+                Number(transferData[i * 3 + 2])]);
+            }
+          }
+          var options = {
+              width: 400,
+              height: 300,
+              title: '折れ線グラフ'
+          };
+          var chart = new google.visualization.LineChart(document.getElementById('target2'));
+          chart.draw(dataTable, options);
+      }
+
+      //google.charts.setOnLoadCallback(drawPieChart);
+
+      // WebViewへメッセージを送る例
+      AndroidWebView.answerFromJs("TEST desu");
+
+      function isAndroid() {
+
+        if (navigator.userAgent.match(/Android/i)) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+  </script>
+  
+  <div id="target"></div>
+  
+  <div id="target2"></div>
+  
+</body>
+</html>
+
+
