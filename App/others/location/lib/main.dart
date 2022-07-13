@@ -36,7 +36,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
-    var _currentLocation = _getCurrentLocation();
+    _getCurrentLocation().then((currentLocation) =>
+        setState(() {
+          _message =  "${currentLocation.latitude} ${currentLocation.longitude}";
+        })
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -75,12 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
       return Future.error('Location permissions are permanently denied.');
     }
 
-    var currentLocation = await Geolocator.getCurrentPosition();
-
-    setState(() {
-      _message =  "${currentLocation.latitude} ${currentLocation.longitude}";
-    });
-
-    return currentLocation;
+    return await Geolocator.getCurrentPosition();
   }
 }
