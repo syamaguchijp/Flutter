@@ -61,15 +61,16 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => sendLocalNotification("テスト配信", "吾輩は猫である。名前はまだ無い。吾輩は猫である。名前はまだ無い。吾輩は猫である。名前はまだ無い。"),
+        onPressed: () => sendLocalNotificationImmediate(
+            "テスト配信", "吾輩は猫である。名前はまだ無い。吾輩は猫である。名前はまだ無い。吾輩は猫である。名前はまだ無い。"),
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  // ローカル通知を発信する
-  Future<void> sendLocalNotification(String title, String message) async {
+  // ローカル通知をsec秒後に発信する
+  Future<void> sendLocalNotification(String title, String message, int sec) async {
 
     final flnp = FlutterLocalNotificationsPlugin();
     flnp.initialize(
@@ -80,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         (new Random()).nextInt(10), // id
         title,
         message,
-        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)), // 5秒後
+        tz.TZDateTime.now(tz.local).add(Duration(seconds: sec)), // sec秒後
         NotificationDetails(
             android: AndroidNotificationDetails('my_channel_id', 'my_channel_name',
                 importance: Importance.max, priority: Priority.high),
@@ -88,5 +89,21 @@ class _MyHomePageState extends State<MyHomePage> {
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime)
     );
+  }
+
+  // ローカル通知をただちに発信する
+  Future<void> sendLocalNotificationImmediate(String title, String message) async {
+
+    final flnp = FlutterLocalNotificationsPlugin();
+    flnp.initialize(
+      InitializationSettings(
+          android:  AndroidInitializationSettings('@mipmap/ic_launcher'),
+          iOS: IOSInitializationSettings()),
+    ).then((_) => flnp.show(0, title, message, NotificationDetails(
+      android: AndroidNotificationDetails(
+          'channel_id',
+          'channel_name', importance: Importance.max, priority: Priority.high
+      ),
+    )));
   }
 }
