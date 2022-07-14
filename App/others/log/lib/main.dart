@@ -31,8 +31,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-    Logging.d("AAA");
+    //Logging.d("AAA");
+    Logging.read().then((value) => print("ans=" + value));
 
     return Scaffold(
       appBar: AppBar(

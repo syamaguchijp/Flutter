@@ -5,6 +5,7 @@ import 'dart:async';
 
 class Logging {
 
+  static bool dumpLog = true;
   static bool writeMode = false;
 
   static void d(message) {
@@ -12,20 +13,18 @@ class Logging {
     final frames = Trace.current(level).frames;
     final frame = frames.isEmpty ? null : frames.first;
     String text = '$frame $message';
-    print(text);
-
+    if (dumpLog) {
+      print(text);
+    }
     if (writeMode) {
       write(text);
-      read().then((String ans) {
-        print("$ans");
-      });
     }
   }
 
-  static void write(String text) async {
+  static void write(String text) {
     print("write $text");
     getFilePath().then((File file) {
-      file.writeAsString(text);
+      file.writeAsStringSync(text + "\n", mode: FileMode.append);
     });
   }
 
@@ -34,8 +33,17 @@ class Logging {
     return await file.readAsString();
   }
 
-  static  Future<File> getFilePath() async {
+  static Future<File> getFilePath() async {
     final directory = await getTemporaryDirectory(); // getApplicationDocumentsDirectory()
     return File(directory.path + '/' + "testlog.txt");
+  }
+
+  static Future<void> deleteFile() async {
+    try {
+      final file = await getFilePath();
+      await file.delete();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }
